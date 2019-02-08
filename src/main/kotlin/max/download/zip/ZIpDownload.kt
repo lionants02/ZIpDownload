@@ -8,7 +8,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 /**
- * Support file only not support dir.
+ * zip download and extract by stream in to out
  */
 class ZIpDownload(
     val url: URL,
@@ -33,13 +33,18 @@ class ZIpDownload(
         var zipEntry = zis.nextEntry
         while (zipEntry != null) {
             val newFile = newFile(destDir, zipEntry)
-            val fos = FileOutputStream(newFile)
-            var len: Int = zis.read(buffer)
-            while (len > 0) {
-                fos.write(buffer, 0, len)
-                len = zis.read(buffer)
+            if (zipEntry.isDirectory) {
+                newFile.mkdirs()
+            } else {
+
+                val fos = FileOutputStream(newFile)
+                var len: Int = zis.read(buffer)
+                while (len > 0) {
+                    fos.write(buffer, 0, len)
+                    len = zis.read(buffer)
+                }
+                fos.close()
             }
-            fos.close()
             zipEntry = zis.nextEntry
         }
         zis.closeEntry()
