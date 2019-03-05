@@ -25,5 +25,5 @@ dependencies {
     val zd = ZIpDownload(URL("https://github.com/ffc-nectec/AirSyncLauncher/releases/download/0.0.1/t1.zip")) {
         println(it / (1024L * 1024L))
     }
-    zd.download(File("temp"))
+    zd.download(File("downloadToFolder"))
 ```
