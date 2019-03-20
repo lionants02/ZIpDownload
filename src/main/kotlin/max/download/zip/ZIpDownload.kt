@@ -18,9 +18,10 @@ class ZIpDownload(
     fun download(destDir: File = File("temp.download")) {
 
         val webInputStream = MyBufferInputStream(url.openStream())
+        var isFinish = false
 
         Thread {
-            while (true) {
+            while (!isFinish) {
                 callBackDownloadSize(webInputStream.sizeLoad.toDouble())
                 Thread.sleep(callBackDelay)
             }
@@ -47,6 +48,7 @@ class ZIpDownload(
             }
             zipEntry = zis.nextEntry
         }
+        isFinish = true
         zis.closeEntry()
         zis.close()
     }
